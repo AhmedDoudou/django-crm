@@ -1,3 +1,5 @@
+{% load static %}
+
 <!DOCTYPE html>
 <html lang="en">
 
@@ -5,15 +7,15 @@
     <meta charset="UTF-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link href="{% static 'css/style.css' %}" rel="stylesheet">
     <link href="https://unpkg.com/tailwindcss@^2/dist/tailwind.min.css" rel="stylesheet">
-    <title>Leads</title>
+
+    <title>DJ CRM</title>
 </head>
 
+
+{% include 'navbar.html' %} {% block content %} {% endblock content %}
+
 <body>
-{% include 'navbar.html' %}
-{% block content %} 
-
-
-{% endblock content %}
 
 </html>
