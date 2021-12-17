@@ -1,6 +1,8 @@
 from django.shortcuts import render, redirect, reverse
 from django.contrib.auth.mixins import LoginRequiredMixin
 from leads.models import Lead , Agent
+from agents.models import AgentModelForm
+
 from django.views import generic
 
 
@@ -14,8 +16,8 @@ class AgentListView(generic.ListView):
 
 
 class AgentCreateView(generic.CreateView):
-    template_name = "Lead/agent_create.html/"
-    form_class = LeadModelForm
+    template_name = "Agent/agent_create.html/"
+    form_class = AgentModelForm
     def get_success_url(self):
-        return reverse("leads:home")
+        return reverse("agents:agent")
     
