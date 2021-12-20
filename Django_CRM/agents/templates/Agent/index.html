@@ -15,12 +15,12 @@
                 <div class="h-full flex flex-col items-center text-center">
                     <img alt="team" class="flex-shrink-0 rounded-full h-56 object-cover object-center mb-4" src="https://dummyimage.com/200x200">
                     <div class="w-full">
-                        <h2 class="title-font font-medium text-lg text-gray-900">{{Agent}} </h2>
-                        <h3 class="text-gray-500 mb-3"> {{Agent.agent}} </h3>
+                        <h2 class="title-font font-medium text-lg text-gray-900">{{Agent.user.username}} </h2>
+                        <h3 class="text-gray-500 mb-3"> {{Agent.user.email}} </h3>
                         <p class="mb-4">DIY tote bag drinking vinegar cronut adaptogen squid fanny pack vaporware.</p>
                         <span class="inline-flex">
-                    <a href="{% url 'agents:agent' %}" class="text-gray-900 hover:bg-purple-600 text-white-500 ">
-                      View 
+                    <a href="{% url 'agents:detail-agent' Agent.id %}" class="text-gray-900 hover:bg-purple-600 text-white-500 ">
+                      View Agent
                     </a>
                   </span>
                     </div>
