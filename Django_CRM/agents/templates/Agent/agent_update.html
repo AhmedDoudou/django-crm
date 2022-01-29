@@ -1,4 +1,4 @@
-{% extends 'base.html' %} {% block content %}
+{% extends 'base.html' %}{% load tailwind_filters %} {% block content %}
 
 <section class="text-gray-600 body-font overflow-hidden">
     <div class="container px-5 py-24 mx-auto">
@@ -12,11 +12,18 @@
                     <a href="{% url 'agents:delete-agent' agent.id %}" class="flex-grow border-b-2 border-gray-300 py-2 text-lg px-1">Delete</a>
                 </div>
                 <form method="post">
-                    {% csrf_token %} {{ form.as_p }}
-                    <button type="submit" class="flex ml-auto text-white bg-purple-500 border-0 py-2 px-6 focus:outline-none hover:bg-purple-600 rounded">Update</button>
+                    {% csrf_token %} {{ form|crispy }}
+                    <div>
+                        <button type="submit" class="group relative w-full flex justify-center py-2 px-4 border border-transparent text-sm font-medium rounded-md text-white bg-indigo-600 hover:bg-indigo-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500">
+                    <span class="absolute left-0 inset-y-0 flex items-center pl-3">
+                      <!-- Heroicon name: solid/lock-closed -->
+                    
+                    </span>
+                    Update
+                  </button>
+                    </div>
                 </form>
             </div>
-            <img alt="ecommerce" class="lg:w-1/2 w-full lg:h-auto h-64 object-cover object-center rounded" src="https://dummyimage.com/400x400">
         </div>
     </div>
 </section>

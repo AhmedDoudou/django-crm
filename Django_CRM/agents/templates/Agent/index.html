@@ -3,32 +3,35 @@
 <section class="text-gray-600 body-font">
     <div class="container px-5 py-24 mx-auto">
         <div class="flex flex-col text-center w-full mb-20">
-            <button type="submit" class="flex ml-auto text-white bg-purple-500 border-0 py-2 px-6 focus:outline-none hover:bg-purple-600 rounded"><a href="{% url 'agents:create-agent' %}" class="text-gray-900 hover:bg-purple-600 text-white-500 ">
-                Create Agent
-              </a></button>
-            <h1 class="text-2xl font-medium title-font mb-4 text-gray-900">Agents</h1>
+            <h1 class="sm:text-3xl text-2xl font-medium title-font mb-4 text-gray-900">Our Agents</h1>
+            <p class="lg:w-2/3 mx-auto leading-relaxed text-base">Her is the List Of Our Agents.</p>
+            <a href="{% url 'agents:create-agent' %}" class="flex ml-auto text-black bg-purple-300 border-0 py-2 px-6 focus:outline-none hover:bg-purple-500 rounded">Add Agent</a>
         </div>
-
-        <div class="flex flex-wrap -m-4">
-            {% for Agent in agents %}
-            <div class="p-4 lg:w-1/4 md:w-1/2">
-                <div class="h-full flex flex-col items-center text-center">
-                    <img alt="team" class="flex-shrink-0 rounded-full h-56 object-cover object-center mb-4" src="https://dummyimage.com/200x200">
-                    <div class="w-full">
-                        <h2 class="title-font font-medium text-lg text-gray-900">{{Agent.user.username}} </h2>
-                        <h3 class="text-gray-500 mb-3"> {{Agent.user.email}} </h3>
-                        <p class="mb-4">DIY tote bag drinking vinegar cronut adaptogen squid fanny pack vaporware.</p>
-                        <span class="inline-flex">
-                    <a href="{% url 'agents:detail-agent' Agent.id %}" class="text-gray-900 hover:bg-purple-600 text-white-500 ">
-                      View Agent
-                    </a>
-                  </span>
-                    </div>
-                </div>
-            </div>
-            {% endfor %}
-
+        <div class="lg:w-2/3 w-full mx-auto overflow-auto">
+            <table class="table-auto w-full text-left whitespace-no-wrap">
+                <thead>
+                    <tr>
+                        <th class="px-4 py-3 title-font tracking-wider font-medium text-gray-900 text-sm bg-gray-100 rounded-tl rounded-bl">Name</th>
+                        <th class="px-4 py-3 title-font tracking-wider font-medium text-gray-900 text-sm bg-gray-100">Email</th>
+                        <th class="w-10 title-font tracking-wider font-medium text-gray-900 text-sm bg-gray-100 rounded-tr rounded-br">Status</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    {% for Agent in agents %}
+                    <tr>
+                        <td class="border-t-2 border-gray-200 px-4 py-3"><a href="{% url 'agents:detail-agent' Agent.pk %}" class="text-indigo-500 hover:text-blue-500 ">{{ Agent.user.username }}</a></td>
+                        <td class="border-t-2 border-gray-200 px-4 py-3">{{Agent.user.email}}</td>
+                        {% if Agent.user.is_active == True %}
+                        <td class="border-t-2 border-gray-200 px-4 py-3 bg-green-200 rounded">Active</td>
+                        {% else %}
+                        <td class="border-t-2 border-gray-200 px-4 py-3 bg-red-200 rounded">Disactive</td>
+                        {% endif %}
+                    </tr>
+                    {% endfor %}
+                </tbody>
+            </table>
         </div>
+    </div>
 </section>
 
 {% endblock content %}
