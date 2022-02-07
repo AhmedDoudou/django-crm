@@ -1,9 +1,10 @@
+import datetime
 from django.shortcuts import render, redirect, reverse
 from django.contrib.auth.mixins import LoginRequiredMixin
 from django.core.mail import send_mail
-from .models import Lead , Agent, Category
+from .models import Lead , Agent, Category, FollowUp
 from agents.mixins import OrganisorAndLoginRequiredMixin
-from .form import LeadModelForm, CustomUserCreationForm, AssignAgentForm
+from .form import LeadModelForm, CustomUserCreationForm, AssignAgentForm, FollowUpModelForm
 from django.views import generic
 
 class SignupView(generic.CreateView):
@@ -13,6 +14,24 @@ class SignupView(generic.CreateView):
         return reverse("login")
 class DashbordView(generic.TemplateView):
     template_name = "dashbord.html"
+
+    def get_context_data(self, **kwargs):
+        context = super(DashbordView, self).get_context_data(**kwargs)
+        user = self.request.user
+        # counting Total of Leads
+        total_leads = Lead.objects.filter(organisation=user.userprofile).count()
+        # Leads in 30 days ago
+        thirty_days = datetime.date.today() - datetime.timedelta(days=30)
+        last_thirty_days = Lead.objects.filter(
+            organisation=user.userprofile,
+            date_added__gte=thirty_days
+        ).count()
+        context.update({
+            "total_leads": total_leads,
+            "last_thirty_days": last_thirty_days
+        })
+
+        return context
 
 class LeadListView(LoginRequiredMixin, generic.ListView):
     template_name = "Lead/index.html"
@@ -52,9 +71,12 @@ class LeadCreateView(OrganisorAndLoginRequiredMixin, generic.CreateView):
     template_name = "Lead/lead_create.html/"
     form_class = LeadModelForm
     def get_success_url(self):
-        return reverse("leads:leads")
+        return reverse("leads:home")
     
     def form_valid (self, form):
+        lead = form.save(commit=False) 
+        lead.organisation =self.request.user.userprofile
+        lead.save()
         send_mail(
             subject=" A Lead has been created",
             message=" Go to site to see new lead ",
@@ -148,6 +170,57 @@ class CategoryDetailView(LoginRequiredMixin, generic.DetailView):
             queryset = Category.objects.filter(organisation=user.agent.organisation)
             
          return queryset
+
+
+class FollowUpCreateView(OrganisorAndLoginRequiredMixin, generic.CreateView):
+    template_name = "Lead/followup_create.html/"
+    form_class = FollowUpModelForm
+    def get_success_url(self):
+        return reverse("leads:detail-lead",kwargs={"pk":self.kwargs["pk"]})
+    def get_context_data(self, **kwargs):
+        context = super(FollowUpCreateView, self).get_context_data(**kwargs)
+
+        context.update({
+           "lead": Lead.objects.get(pk=self.kwargs["pk"]) 
+        })
+        return context
+    def form_valid (self, form):
+        lead = Lead.objects.get(pk=self.kwargs["pk"])
+        followup = form.save(commit=False) 
+        followup.lead =lead
+        followup.save()
+        return super(FollowUpCreateView, self).form_valid(form)
+
+
+
+class FollowUpUpdateView(LoginRequiredMixin, generic.UpdateView):
+    template_name = "Lead/followup_update.html/"
+    form_class = FollowUpModelForm
+
+    def get_success_url(self):
+        return reverse("leads:detail-lead",kwargs={"pk":self.get_object().lead.id})
+    def get_queryset(self):
+        user = self.request.user
+        if user.is_organisor:
+            queryset = FollowUp.objects.filter(lead__organisation=user.userprofile)
+        else:
+            queryset = FollowUp.objects.filter(lead__organisation=user.agent.organisation)
+            
+        return queryset
+       
+
+
+class FollowUpDeleteView(LoginRequiredMixin, generic.DeleteView):
+    template_name = "Lead/delete_followup.html/"
+    def get_success_url(self):
+        return reverse("leads:detail-lead",kwargs={"pk":self.get_object().lead.id})
+    def get_queryset(self):
+        user = self.request.user
+        if user.is_organisor:
+            queryset = FollowUp.objects.filter(lead__organisation=user.userprofile)
+        else:
+            queryset = FollowUp.objects.filter(lead__organisation=user.agent.organisation)
+        return queryset
 
 
 

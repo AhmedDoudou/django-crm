@@ -25,13 +25,13 @@ INSTALLED_APPS = [
     'django.contrib.sessions',
     'django.contrib.messages',
     'django.contrib.staticfiles',
-
-    #####################
+    'theme',
+    'tailwind',
     'crispy_forms',
-    "crispy_tailwind",
-    # Local apps
+    'crispy_tailwind',
+    
     'leads',
-    'agents',
+    'agents'
 ]
 
 MIDDLEWARE = [
@@ -118,6 +118,8 @@ STATICFILES_DIRS = [
 ]
 STATIC_ROO = "static_root"
 
+MEDIA_URL = '/media/'
+MEDIA_ROOT = 'media'
 # Default primary key field type
 # https://docs.djangoproject.com/en/3.2/ref/settings/#default-auto-field
 
@@ -133,3 +135,8 @@ LOGOUT_REDIRECT_URL = "/"
 CRISPY_ALLOWED_TEMPLATE_PACKS = "tailwind"
 
 CRISPY_TEMPLATE_PACK = "tailwind"
+
+TAILWIND_APP_NAME = "theme"
+
+
+NPM_BIN_PATH = r"C:\Program Files\nodejs\npm.cmd"

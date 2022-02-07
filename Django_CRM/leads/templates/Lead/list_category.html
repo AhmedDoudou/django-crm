@@ -8,7 +8,7 @@
             <p class="lg:w-2/3 mx-auto leading-relaxed text-base"> All the categories</p>
         </div>
         <div class="lg:w-2/3 w-full mx-auto overflow-auto">
-            <table class="table-auto w-full text-left whitespace-no-wrap">
+            <table class="table-auto w-full text-left whitespace-no-wrap border">
                 <thead>
                     <tr>
                         <th class="px-4 py-3 title-font tracking-wider font-medium text-gray-900 text-sm bg-gray-100 rounded-tl rounded-bl">Name</th>
@@ -21,12 +21,12 @@
                         <td class="px-4 py-3">{{unassigned_lead_count}}</td>
                     </tr>
                     {% for category in category_list %}
-                        <tr>
-                            <td class="px-4 py-3">
-                                <a href="{% url 'leads:category-detail' category.id %}">{{category.name}} </a>
-                            </td>
-                            <td class="px-4 py-3">TODO COUNT</td>
-                        </tr>
+                    <tr>
+                        <td class="px-4 py-3">
+                            <a href="{% url 'leads:category-detail' category.id %}" class="text-pink-600 hover:text-blue-500">{{category.name}} </a>
+                        </td>
+                        <td class="px-4 py-3">TODO COUNT</td>
+                    </tr>
                     {% endfor %}
                 </tbody>
             </table>

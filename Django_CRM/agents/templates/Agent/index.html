@@ -14,6 +14,8 @@
                         <th class="px-4 py-3 title-font tracking-wider font-medium text-gray-900 text-sm bg-gray-100 rounded-tl rounded-bl">Name</th>
                         <th class="px-4 py-3 title-font tracking-wider font-medium text-gray-900 text-sm bg-gray-100">Email</th>
                         <th class="w-10 title-font tracking-wider font-medium text-gray-900 text-sm bg-gray-100 rounded-tr rounded-br">Status</th>
+                        <th class="w-10 title-font tracking-wider font-medium text-gray-900 text-sm bg-gray-100 rounded-tr rounded-br">Joined Date </th>
+
                     </tr>
                 </thead>
                 <tbody>
@@ -21,11 +23,16 @@
                     <tr>
                         <td class="border-t-2 border-gray-200 px-4 py-3"><a href="{% url 'agents:detail-agent' Agent.pk %}" class="text-indigo-500 hover:text-blue-500 ">{{ Agent.user.username }}</a></td>
                         <td class="border-t-2 border-gray-200 px-4 py-3">{{Agent.user.email}}</td>
-                        {% if Agent.user.is_active == True %}
-                        <td class="border-t-2 border-gray-200 px-4 py-3 bg-green-200 rounded">Active</td>
+                        {% if Agent.user.is_active %}
+                        <td class="border-t-2 border-gray-200 px-4 py-3 "><span class="px-2 inline-flex text-xs leading-5 font-semibold rounded-full bg-green-100 text-green-800">
+                            Active
+                          </span></td>
                         {% else %}
-                        <td class="border-t-2 border-gray-200 px-4 py-3 bg-red-200 rounded">Disactive</td>
+                        <td class="border-t-2 border-gray-200 px-4 py-3 "><span class="px-2 inline-flex text-xs leading-5 font-semibold rounded-full bg-red-200 text-red-800">
+                            Deactivate
+                          </span></td>
                         {% endif %}
+                        <td class="border-t-2 border-gray-200 px-4 py-3 w-full">{{Agent.user.date_joined}}</td>
                     </tr>
                     {% endfor %}
                 </tbody>

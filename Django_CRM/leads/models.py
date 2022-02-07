@@ -13,7 +13,12 @@ class UserProfile(models.Model):
 
     def __str__(self):
         return self.user.username
-    
+
+
+
+class LeadManager(models.Manager):
+    def get_queryset(self):
+        return super().get_queryset()
 
 
 class Lead(models.Model):
@@ -27,11 +32,23 @@ class Lead(models.Model):
     date_added = models.DateTimeField(auto_now_add=True)
     phone_number = models.CharField(max_length=20)
     email = models.EmailField()
+    profile_picture = models.ImageField(null=True, blank=True,upload_to='profiles/')
+
+    objects = LeadManager()
 
     #def __str__(self):
         #return self.first_name
         #f"{self.first_name} {self.agent}"
-    
+
+def handle_upload_followups(instance,filename):
+    return f"lead_followups/lead_{instance.id}/{filename}"
+
+class FollowUp(models.Model):
+    lead = models.ForeignKey(Lead,related_name='followups' ,on_delete=models.CASCADE)
+    date_added = models.DateTimeField(auto_now_add=True)
+    note = models.TextField(null=True, blank=True)
+    files = models.FileField(null=True, blank=True, upload_to=handle_upload_followups)
+
 
 class Agent(models.Model):
     user = models.OneToOneField(User, on_delete=models.CASCADE)
